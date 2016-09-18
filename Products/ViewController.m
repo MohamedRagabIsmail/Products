@@ -10,8 +10,12 @@
 #import "CHTCollectionViewWaterfallCell.h"
 #import "CHTCollectionViewWaterfallHeader.h"
 #import "CHTCollectionViewWaterfallFooter.h"
+#import "ProductImage.h"
+#import "Product.h"
+#import "AFNetworking.h"
 
-#define CELL_COUNT 30
+
+#define CELL_COUNT 50
 #define CELL_IDENTIFIER @"WaterfallCell"
 #define HEADER_IDENTIFIER @"WaterfallHeader"
 #define FOOTER_IDENTIFIER @"WaterfallFooter"
@@ -19,14 +23,64 @@
 @interface ViewController ()
 @property (nonatomic, strong) NSArray *cellSizes;
 @property (nonatomic, strong) NSArray *cats;
-@property (nonatomic, strong) NSNumber* scrollViewDidScroll;
 @property (nonatomic, strong) NSNumber* numberOfSectionsInCollectionView;
+@property (nonatomic, strong) NSMutableArray *products;
+@property (nonatomic, strong) NSMutableArray *cellSizesHolder;
+@property (nonatomic,strong) NSNumber* trackedLoadingCount;
+@property (nonatomic,strong) NSNumber* trackedFromID;
 
 @end
 
 @implementation ViewController
 
 #pragma mark - Accessors
+
+
+-(void)loadNextProductsArray
+{
+    
+    int count = [self.trackedLoadingCount intValue];
+    
+    int fromID = [self.trackedFromID intValue];
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    
+    [manager GET:[NSString stringWithFormat:@"http://grapesnberries.getsandbox.com/products?from=%i&count=%i",fromID,count] parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+        
+        //NSLog(@"%@",(NSArray*)responseObject);
+        
+        for(int i = 0 ; i<CELL_COUNT; i++)
+        {
+            Product* p = [[Product alloc]initWithProductParameters:[(NSArray*)responseObject objectAtIndex:i]];
+            NSLog(@"%@",p.productID);
+
+            [self.products addObject:p];
+            NSLog(@"%@", ((Product*)[self.products objectAtIndex:i]).productID);
+        }
+        
+        
+        int sectionToReload = (int)(([self.products count]/CELL_COUNT)-1);
+        
+        int sectionToInsert = sectionToReload;
+
+        self.numberOfSectionsInCollectionView = [NSNumber numberWithInt:sectionToReload+1];
+        [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:sectionToInsert]];
+
+        
+        //self.numberOfSectionsInCollectionView = [NSNumber numberWithInt:1+[self.numberOfSectionsInCollectionView intValue]];
+        //[self.collectionView insertSections:[NSIndexSet indexSetWithIndex:[self.numberOfSectionsInCollectionView intValue]-1]];
+        
+        
+        [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:sectionToReload]];
+        
+    } failure:^(NSURLSessionTask *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+    
+    self.trackedFromID = [NSNumber numberWithInt: fromID + count];
+}
+
+
 
 -(void)scrollViewDidScroll: (UIScrollView*)scrollView
 {
@@ -38,18 +92,22 @@
     {
         // then we are at the top
         NSLog(@"Top of Scroll detected!!");
-        //[scrollView setContentOffset:CGPointMake(scrollOffset-scrollViewHeight, 0)];
         
     }
     else if (scrollOffset + scrollViewHeight == scrollContentSizeHeight)
     {
         // then we are at the end
         NSLog(@"End of Scroll detected!!");
-        //[scrollView setContentOffset:CGPointMake(scrollOffset+scrollViewHeight, 0)];
-        self.numberOfSectionsInCollectionView = [NSNumber numberWithInt:1+[self.numberOfSectionsInCollectionView intValue]];
-        [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:[self.numberOfSectionsInCollectionView intValue]-1]];
+        
+        [self loadNextProductsArray];
+        
+        //self.numberOfSectionsInCollectionView = [NSNumber numberWithInt:1+[self.numberOfSectionsInCollectionView intValue]];
+        //[self.collectionView insertSections:[NSIndexSet indexSetWithIndex:[self.numberOfSectionsInCollectionView intValue]-1]];
         
         
+
+        
+
     }
 }
 
@@ -82,17 +140,13 @@
 
 - (NSArray *)cellSizes {
     if (!_cellSizes) {
-        _cellSizes = @[
-                       /*[NSValue valueWithCGSize:CGSizeMake(400, 550)],
-                        [NSValue valueWithCGSize:CGSizeMake(1000, 665)],
-                        [NSValue valueWithCGSize:CGSizeMake(1024, 689)],
-                        [NSValue valueWithCGSize:CGSizeMake(640, 427)]
-                        */
-                       [NSValue valueWithCGSize:CGSizeMake(150, 372)],
-                       [NSValue valueWithCGSize:CGSizeMake(150, 468)],
-                       [NSValue valueWithCGSize:CGSizeMake(150, 367)],
-                       [NSValue valueWithCGSize:CGSizeMake(150, 321)]
-                       ];
+        for(int i=0 ; i< CELL_COUNT; i++)
+        {
+            Product * p = (Product*)[self.products objectAtIndex:i+([self.numberOfSectionsInCollectionView intValue] - 1) * CELL_COUNT];
+            [self.cellSizesHolder addObject:[NSValue valueWithCGSize:CGSizeMake([p.productImage.productImageWidth floatValue], [p.productImage.productImageHeight floatValue])]];
+        }
+        _cellSizes = [NSArray arrayWithArray:self.cellSizesHolder];
+        
     }
     return _cellSizes;
 }
@@ -114,9 +168,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.products = [[NSMutableArray alloc]init];
+    self.cellSizesHolder = [[NSMutableArray alloc]init];
+    self.trackedLoadingCount = [NSNumber numberWithInteger: CELL_COUNT];
+    self.trackedFromID = [NSNumber numberWithInteger: 1];
+
+    self.numberOfSectionsInCollectionView = [NSNumber numberWithInt:0];
+
+    [self loadNextProductsArray];
     [self.view addSubview:self.collectionView];
-    self.scrollViewDidScroll = [NSNumber numberWithBool:false];
-    self.numberOfSectionsInCollectionView = [NSNumber numberWithInt:2];
+    //self.numberOfSectionsInCollectionView = [NSNumber numberWithInt:1];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -138,6 +199,10 @@
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    if([self.products isEqual:nil] || (([self.products count] < (section + 1 )*CELL_COUNT)&&([self.products count] > (section)*CELL_COUNT)))
+    {
+        return 0;
+    }
     return CELL_COUNT;
 }
 
@@ -161,15 +226,27 @@
     cell.imageView.image = nil;
     //cell.imageView.image = [UIImage imageNamed:self.cats[indexPath.item % 4]];
     
+    
+    
+    
+    
+    
+    
     __weak UIImageView* imageView = cell.imageView;
-    cell.imageURL = self.cats[indexPath.item % 4];
+    
+    Product* p = [self.products objectAtIndex:indexPath.item +([self.numberOfSectionsInCollectionView intValue]-1) * CELL_COUNT];
+    
+    cell.imageURL = p.productImage.ProductImageURL;
+    
+    NSLog(@"%@",cell.imageURL);
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW,0), ^{
         
-        UIImage* networkImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.cats[indexPath.item % 4]]]];
+        UIImage* networkImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:p.productImage.ProductImageURL]]];
         
         if(imageView) {
             dispatch_sync(dispatch_get_main_queue(), ^{
-                if(cell.imageURL == self.cats[indexPath.item % 4])
+                if(cell.imageURL == p.productImage.ProductImageURL)
                 {
                     imageView.image = networkImage;
                 }
@@ -189,7 +266,7 @@
     //[cell.descriptionLabel setCenter:cell.contentView.center];
     
     
-    [cell.descriptionLabel setFrame: CGRectMake(0, [self.cellSizes[indexPath.item % 4] CGSizeValue].height/2, [self.cellSizes[indexPath.item % 4] CGSizeValue].width, [self.cellSizes[indexPath.item % 4] CGSizeValue].height/2)];
+                    //[cell.descriptionLabel setFrame: CGRectMake(0, [self.cellSizes[indexPath.item % 4] CGSizeValue].height/2, [self.cellSizes[indexPath.item % 4] CGSizeValue].width, [self.cellSizes[indexPath.item % 4] CGSizeValue].height/2)];
     
     return cell;
 }
@@ -219,7 +296,9 @@
 
 #pragma mark - CHTCollectionViewDelegateWaterfallLayout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return [self.cellSizes[indexPath.item % 4] CGSizeValue];
+    
+    //return [[self.cellSizes objectAtIndex:(indexPath.item + ([self.numberOfSectionsInCollectionView intValue] - 1) * CELL_COUNT)] CGSizeValue];
+    return [[self.cellSizes objectAtIndex:(indexPath.item + ([self.numberOfSectionsInCollectionView intValue] - 1) * CELL_COUNT)] CGSizeValue];
 }
 
 @end

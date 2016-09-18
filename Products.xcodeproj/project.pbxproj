@@ -16,6 +16,8 @@
 		19D1F4331D8E999F006179A7 /* CHTCollectionViewWaterfallCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 19D1F42E1D8E999F006179A7 /* CHTCollectionViewWaterfallCell.m */; };
 		19D1F4341D8E999F006179A7 /* CHTCollectionViewWaterfallHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 19D1F4301D8E999F006179A7 /* CHTCollectionViewWaterfallHeader.m */; };
 		19D1F4351D8E999F006179A7 /* CHTCollectionViewWaterfallFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 19D1F4321D8E999F006179A7 /* CHTCollectionViewWaterfallFooter.m */; };
+		19D1F43A1D8EA2C6006179A7 /* ProductImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 19D1F4371D8EA2C6006179A7 /* ProductImage.m */; };
+		19D1F43B1D8EA2C6006179A7 /* Product.m in Sources */ = {isa = PBXBuildFile; fileRef = 19D1F4391D8EA2C6006179A7 /* Product.m */; };
 		C1CCC2A618B0230A4B04B48E /* libPods-Products.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DE55866C073849F79FC07B8 /* libPods-Products.a */; };
 /* End PBXBuildFile section */
 
@@ -36,6 +38,10 @@
 		19D1F4301D8E999F006179A7 /* CHTCollectionViewWaterfallHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHTCollectionViewWaterfallHeader.m; sourceTree = "<group>"; };
 		19D1F4311D8E999F006179A7 /* CHTCollectionViewWaterfallFooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHTCollectionViewWaterfallFooter.h; sourceTree = "<group>"; };
 		19D1F4321D8E999F006179A7 /* CHTCollectionViewWaterfallFooter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHTCollectionViewWaterfallFooter.m; sourceTree = "<group>"; };
+		19D1F4361D8EA2C6006179A7 /* ProductImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductImage.h; sourceTree = "<group>"; };
+		19D1F4371D8EA2C6006179A7 /* ProductImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductImage.m; sourceTree = "<group>"; };
+		19D1F4381D8EA2C6006179A7 /* Product.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Product.h; sourceTree = "<group>"; };
+		19D1F4391D8EA2C6006179A7 /* Product.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Product.m; sourceTree = "<group>"; };
 		1E9CE217D0877F1785522C2C /* Pods-Products.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Products.release.xcconfig"; path = "Pods/Target Support Files/Pods-Products/Pods-Products.release.xcconfig"; sourceTree = "<group>"; };
 		4DE55866C073849F79FC07B8 /* libPods-Products.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Products.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF9200DB2BF0F88FC0691056 /* Pods-Products.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Products.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Products/Pods-Products.debug.xcconfig"; sourceTree = "<group>"; };
@@ -62,6 +68,10 @@
 				19D1F4301D8E999F006179A7 /* CHTCollectionViewWaterfallHeader.m */,
 				19D1F4311D8E999F006179A7 /* CHTCollectionViewWaterfallFooter.h */,
 				19D1F4321D8E999F006179A7 /* CHTCollectionViewWaterfallFooter.m */,
+				19D1F4361D8EA2C6006179A7 /* ProductImage.h */,
+				19D1F4371D8EA2C6006179A7 /* ProductImage.m */,
+				19D1F4381D8EA2C6006179A7 /* Product.h */,
+				19D1F4391D8EA2C6006179A7 /* Product.m */,
 				193AF4971D8E9455004BB20D /* Products */,
 				193AF4961D8E9455004BB20D /* Products */,
 				63B82D6267EE4B66A1C5CCDE /* Pods */,
@@ -244,6 +254,8 @@
 				19D1F4351D8E999F006179A7 /* CHTCollectionViewWaterfallFooter.m in Sources */,
 				193AF49D1D8E9455004BB20D /* AppDelegate.m in Sources */,
 				19D1F4331D8E999F006179A7 /* CHTCollectionViewWaterfallCell.m in Sources */,
+				19D1F43B1D8EA2C6006179A7 /* Product.m in Sources */,
+				19D1F43A1D8EA2C6006179A7 /* ProductImage.m in Sources */,
 				193AF49A1D8E9455004BB20D /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
