@@ -38,28 +38,4 @@
     return self;
 }
 
-+(void)PrintProductDataofCount:(int)count from:(int) fromID
-{
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    [manager GET:[NSString stringWithFormat:@"http://grapesnberries.getsandbox.com/products?from=%i&count=%i",fromID,count] parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-        NSLog(@"JSON: %@", responseObject);
-        
-        
-        
-        Product* myProduct = [[Product alloc]initWithProductParameters:[(NSArray*)responseObject objectAtIndex:0]];
-        
-        NSLog(@"%@",[NSString stringWithFormat:@"%@",[myProduct productPrice]]);
-        NSLog(@"%@",[myProduct productDescription]);
-        NSLog(@"%@",[myProduct productID]);
-        
-        
-        NSLog(@"%@",[NSString stringWithFormat:@"%@",[myProduct.productImage productImageWidth]]);
-        NSLog(@"%@",[NSString stringWithFormat:@"%@",[myProduct.productImage productImageHeight]]);
-        NSLog(@"%@",[myProduct.productImage ProductImageURL]);
-    } failure:^(NSURLSessionTask *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-    }];
-
-}
-
 @end

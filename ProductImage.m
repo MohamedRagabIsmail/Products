@@ -27,15 +27,5 @@
     return self;
 }
 
-+(void) printingProductImageData
-{
-    NSDictionary *productImageParameters = @{@"width" : @50, @"height" : @100, @"url" : @"www.google.com"};
-
-    ProductImage* myProductImage = [[ProductImage alloc]initWithProductImageParameters:productImageParameters];
-    
-    NSLog(@"%@",[NSString stringWithFormat:@"%@",[myProductImage productImageWidth]]);
-    NSLog(@"%@",[NSString stringWithFormat:@"%@",[myProductImage productImageHeight]]);
-    NSLog(@"%@",[myProductImage ProductImageURL]);
-}
 
 @end

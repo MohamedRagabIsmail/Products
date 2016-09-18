@@ -93,7 +93,7 @@
         _collectionView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         _collectionView.dataSource = self;
         _collectionView.delegate = self;
-        _collectionView.backgroundColor = [UIColor blackColor];
+        _collectionView.backgroundColor = [UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1.0];
         [_collectionView registerClass:[CHTCollectionViewWaterfallCell class]
             forCellWithReuseIdentifier:CELL_IDENTIFIER];
     }
@@ -164,7 +164,9 @@
     
     cell.imageURL = p.productImage.ProductImageURL;
     
-    if(![self.imagesCache objectForKey:p.productImage.ProductImageURL])
+    cell.imageView.image = [self.imagesCache objectForKey:p.productImage.ProductImageURL];
+    
+    if(cell.imageView.image == nil)
     {
         
         NSLog(@"%@",cell.imageURL);
@@ -184,15 +186,7 @@
                 });
             }
         });
-        
     }
-    else
-    {
-        imageView.image = [self.imagesCache objectForKey:p.productImage.ProductImageURL];
-    }
-    
-    
-    
     
     cell.descriptionLabel.text = p.productDescription;
     cell.priceLabel.text = [NSString stringWithFormat:@"$%@",p.productPrice];
@@ -204,8 +198,8 @@
     
     [cell.descriptionLabel setFrame: CGRectMake(0, cell.contentView.bounds.size.height - cell.descriptionLabel.bounds.size.height, cell.contentView.bounds.size.width, cell.descriptionLabel.bounds.size.height)];
     
-    cell.imageView.layer.borderColor = [UIColor grayColor].CGColor;
-    cell.imageView.layer.borderWidth = 1.0;
+    cell.contentView.layer.borderColor = [UIColor grayColor].CGColor;
+    cell.contentView.layer.borderWidth = 1.0;
     return cell;
 }
 

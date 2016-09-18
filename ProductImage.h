@@ -13,5 +13,4 @@
 @property (nonatomic,retain) NSNumber* productImageHeight;
 @property (nonatomic,retain) NSString* ProductImageURL;
 -(ProductImage*) initWithProductImageParameters:(NSDictionary*)productImageparameters;
-+(void) printingProductImageData;
 @end
