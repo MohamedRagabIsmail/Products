@@ -28,9 +28,14 @@
       [self.contentView addSubview:self.imageView];
       
       UILabel* descriptionLabel = self.descriptionLabel;
+      UILabel* priceLabel = self.priceLabel;
+
       
       [self.contentView addSubview: descriptionLabel];
       [self.contentView bringSubviewToFront: descriptionLabel];
+      
+      [self.contentView addSubview: priceLabel];
+      [self.contentView bringSubviewToFront: priceLabel];
       
       [descriptionLabel sizeToFit]; //added
       //[descriptionLabel layoutIfNeeded]; //added
@@ -47,11 +52,24 @@
     _descriptionLabel = [[UILabel alloc]init];
     [_descriptionLabel setTextAlignment:NSTextAlignmentCenter];
     [_descriptionLabel setTextColor:[UIColor yellowColor]];
-    [_descriptionLabel setFont:[UIFont boldSystemFontOfSize:10]];
+    [_descriptionLabel setFont:[UIFont boldSystemFontOfSize:15]];
         [_descriptionLabel setText:@"Default"];
     
     }
     return _descriptionLabel;
 }
+
+- (UILabel*) priceLabel {
+    if(!_priceLabel){
+        _priceLabel = [[UILabel alloc]init];
+        [_priceLabel setTextAlignment:NSTextAlignmentCenter];
+        [_priceLabel setTextColor:[UIColor yellowColor]];
+        [_priceLabel setFont:[UIFont boldSystemFontOfSize:15]];
+        [_priceLabel setText:@"Default"];
+        
+    }
+    return _priceLabel;
+}
+
 
 @end

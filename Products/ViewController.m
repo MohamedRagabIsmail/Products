@@ -22,7 +22,6 @@
 
 @interface ViewController ()
 @property (nonatomic, strong) NSMutableArray *products;
-@property (nonatomic, strong) NSMutableArray *cellSizesHolder;
 @property (nonatomic,strong) NSNumber* trackedLoadingCount;
 @property (nonatomic,strong) NSNumber* trackedFromID;
 
@@ -152,7 +151,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.products = [[NSMutableArray alloc]init];
-    self.cellSizesHolder = [[NSMutableArray alloc]init];
     self.trackedLoadingCount = [NSNumber numberWithInteger: CELL_COUNT];
     self.trackedFromID = [NSNumber numberWithInteger: 1];
 
@@ -228,12 +226,14 @@
      cell.imageView.image = [passedArgumentsArray objectAtIndex:1];
      */
     
-    cell.descriptionLabel.text = @"A lot of more text for test!! A lot of more text for test!!";
-    //[cell.descriptionLabel setBounds: cell.contentView.bounds];
-    //[cell.descriptionLabel setCenter:cell.contentView.center];
+    cell.descriptionLabel.text = p.productDescription;
+    cell.priceLabel.text = [NSString stringWithFormat:@"$%@",p.productPrice];
+    [cell.descriptionLabel setBounds: cell.contentView.bounds];
+    [cell.descriptionLabel setCenter:cell.contentView.center];
+    [cell.priceLabel setFrame:CGRectMake(p.cellSize.width - 50, 30, 50, 15)];
     
     
-                    //[cell.descriptionLabel setFrame: CGRectMake(0, [self.cellSizes[indexPath.item % 4] CGSizeValue].height/2, [self.cellSizes[indexPath.item % 4] CGSizeValue].width, [self.cellSizes[indexPath.item % 4] CGSizeValue].height/2)];
+    [cell.descriptionLabel setFrame: CGRectMake(15, [p cellSize].height/2, [p cellSize].width, [p cellSize].height/2)];
     
     return cell;
 }
