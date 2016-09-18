@@ -117,7 +117,9 @@
 
 
     [self loadNextProductsArray];
+
     [self.view addSubview:self.collectionView];
+
     //self.numberOfSectionsInCollectionView = [NSNumber numberWithInt:1];
 }
 
@@ -134,7 +136,17 @@
 - (void)updateLayoutForOrientation:(UIInterfaceOrientation)orientation {
     CHTCollectionViewWaterfallLayout *layout =
     (CHTCollectionViewWaterfallLayout *)self.collectionView.collectionViewLayout;
-    layout.columnCount = UIInterfaceOrientationIsPortrait(orientation) ? 2 : 3;
+    
+    if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
+    {
+        layout.columnCount = UIInterfaceOrientationIsPortrait(orientation) ? 3 : 4;
+
+    }
+    else
+    {
+        layout.columnCount = UIInterfaceOrientationIsPortrait(orientation) ? 2 : 3;
+ 
+    }
 }
 
 #pragma mark - UICollectionViewDataSource
