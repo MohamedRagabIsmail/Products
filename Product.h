@@ -19,4 +19,5 @@
 @property (nonatomic,retain) NSString* productID;
 -(Product*)initWithProductParameters: (NSDictionary*)productParameters;
 +(void)PrintProductDataofCount:(int)count from:(int) fromID;
+@property (nonatomic,readonly) CGSize cellSize;
 @end

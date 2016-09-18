@@ -12,6 +12,11 @@
 
 @implementation Product
 
+-(CGSize) cellSize
+{
+    return CGSizeMake([self.productImage.productImageWidth floatValue], [self.productImage.productImageHeight floatValue]);
+}
+
 -(Product*)initWithProductParameters: (NSDictionary*)productParameters
 {
     self = [super init];

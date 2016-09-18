@@ -21,9 +21,6 @@
 #define FOOTER_IDENTIFIER @"WaterfallFooter"
 
 @interface ViewController ()
-@property (nonatomic, strong) NSArray *cellSizes;
-@property (nonatomic, strong) NSArray *cats;
-@property (nonatomic, strong) NSNumber* numberOfSectionsInCollectionView;
 @property (nonatomic, strong) NSMutableArray *products;
 @property (nonatomic, strong) NSMutableArray *cellSizesHolder;
 @property (nonatomic,strong) NSNumber* trackedLoadingCount;
@@ -49,6 +46,8 @@
         
         //NSLog(@"%@",(NSArray*)responseObject);
         
+        NSMutableArray* newIndexPathes = [NSMutableArray array];
+        
         for(int i = 0 ; i<CELL_COUNT; i++)
         {
             Product* p = [[Product alloc]initWithProductParameters:[(NSArray*)responseObject objectAtIndex:i]];
@@ -56,9 +55,12 @@
 
             [self.products addObject:p];
             NSLog(@"%@", ((Product*)[self.products objectAtIndex:i]).productID);
+            
+            [newIndexPathes addObject:[NSIndexPath indexPathForItem:self.products.count-1 inSection:0]];
         }
         
-        
+        [self.collectionView insertItemsAtIndexPaths:newIndexPathes];
+        /*
         int sectionToReload = (int)(([self.products count]/CELL_COUNT)-1);
         
         int sectionToInsert = sectionToReload;
@@ -72,6 +74,7 @@
         
         
         [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:sectionToReload]];
+         */
         
     } failure:^(NSURLSessionTask *operation, NSError *error) {
         NSLog(@"Error: %@", error);
@@ -138,26 +141,6 @@
     return _collectionView;
 }
 
-- (NSArray *)cellSizes {
-    if (!_cellSizes) {
-        for(int i=0 ; i< CELL_COUNT; i++)
-        {
-            Product * p = (Product*)[self.products objectAtIndex:i+([self.numberOfSectionsInCollectionView intValue] - 1) * CELL_COUNT];
-            [self.cellSizesHolder addObject:[NSValue valueWithCGSize:CGSizeMake([p.productImage.productImageWidth floatValue], [p.productImage.productImageHeight floatValue])]];
-        }
-        _cellSizes = [NSArray arrayWithArray:self.cellSizesHolder];
-        
-    }
-    return _cellSizes;
-}
-
-- (NSArray *)cats {
-    if (!_cats) {
-        //_cats = @[@"cat1.jpg", @"cat2.jpg", @"cat3.jpg", @"cat4.jpg"];
-        _cats = @[@"http://lorempixel.com/150/372/city/id-1", @"http://lorempixel.com/150/468/city/id-2", @"http://lorempixel.com/150/367/city/id-3", @"http://lorempixel.com/150/321/city/id-4"];
-    }
-    return _cats;
-}
 
 #pragma mark - Life Cycle
 
@@ -173,7 +156,6 @@
     self.trackedLoadingCount = [NSNumber numberWithInteger: CELL_COUNT];
     self.trackedFromID = [NSNumber numberWithInteger: 1];
 
-    self.numberOfSectionsInCollectionView = [NSNumber numberWithInt:0];
 
     [self loadNextProductsArray];
     [self.view addSubview:self.collectionView];
@@ -199,22 +181,13 @@
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    if([self.products isEqual:nil] || (([self.products count] < (section + 1 )*CELL_COUNT)&&([self.products count] > (section)*CELL_COUNT)))
-    {
-        return 0;
-    }
-    return CELL_COUNT;
+   
+    return [self.products count];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    /*
-     if(self.scrollViewDidScroll)
-     {
-     int value = [self.numberOfSectionsInCollectionView intValue];
-     self.numberOfSectionsInCollectionView = [NSNumber numberWithInt:value + 1];
-     return [self.numberOfSectionsInCollectionView intValue];
-     }*/
-    return [self.numberOfSectionsInCollectionView intValue];
+  
+    return 1;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -226,15 +199,9 @@
     cell.imageView.image = nil;
     //cell.imageView.image = [UIImage imageNamed:self.cats[indexPath.item % 4]];
     
-    
-    
-    
-    
-    
-    
     __weak UIImageView* imageView = cell.imageView;
     
-    Product* p = [self.products objectAtIndex:indexPath.item +([self.numberOfSectionsInCollectionView intValue]-1) * CELL_COUNT];
+    Product* p = [self.products objectAtIndex:indexPath.item ];
     
     cell.imageURL = p.productImage.ProductImageURL;
     
@@ -297,8 +264,7 @@
 #pragma mark - CHTCollectionViewDelegateWaterfallLayout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     
-    //return [[self.cellSizes objectAtIndex:(indexPath.item + ([self.numberOfSectionsInCollectionView intValue] - 1) * CELL_COUNT)] CGSizeValue];
-    return [[self.cellSizes objectAtIndex:(indexPath.item + ([self.numberOfSectionsInCollectionView intValue] - 1) * CELL_COUNT)] CGSizeValue];
+    return [[self.products objectAtIndex:indexPath.item] cellSize];
 }
 
 @end
