@@ -8,8 +8,6 @@
 
 #import "ViewController.h"
 #import "CHTCollectionViewWaterfallCell.h"
-#import "CHTCollectionViewWaterfallHeader.h"
-#import "CHTCollectionViewWaterfallFooter.h"
 #import "ProductImage.h"
 #import "Product.h"
 #import "AFNetworking.h"
@@ -59,21 +57,6 @@
         }
         
         [self.collectionView insertItemsAtIndexPaths:newIndexPathes];
-        /*
-        int sectionToReload = (int)(([self.products count]/CELL_COUNT)-1);
-        
-        int sectionToInsert = sectionToReload;
-
-        self.numberOfSectionsInCollectionView = [NSNumber numberWithInt:sectionToReload+1];
-        [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:sectionToInsert]];
-
-        
-        //self.numberOfSectionsInCollectionView = [NSNumber numberWithInt:1+[self.numberOfSectionsInCollectionView intValue]];
-        //[self.collectionView insertSections:[NSIndexSet indexSetWithIndex:[self.numberOfSectionsInCollectionView intValue]-1]];
-        
-        
-        [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:sectionToReload]];
-         */
         
     } failure:^(NSURLSessionTask *operation, NSError *error) {
         NSLog(@"Error: %@", error);
@@ -86,30 +69,12 @@
 
 -(void)scrollViewDidScroll: (UIScrollView*)scrollView
 {
-    float scrollViewHeight = scrollView.frame.size.height;
-    float scrollContentSizeHeight = scrollView.contentSize.height;
-    float scrollOffset = scrollView.contentOffset.y;
-    
-    if (scrollOffset == 0)
+    // check if the last cell is visibile
+    if( [self.collectionView cellForItemAtIndexPath:
+         [NSIndexPath indexPathForItem:self.trackedFromID.integerValue-2 inSection:0]])
     {
-        // then we are at the top
-        NSLog(@"Top of Scroll detected!!");
-        
-    }
-    else if (scrollOffset + scrollViewHeight == scrollContentSizeHeight)
-    {
-        // then we are at the end
-        NSLog(@"End of Scroll detected!!");
-        
+        // the last cell is visible, load the next items
         [self loadNextProductsArray];
-        
-        //self.numberOfSectionsInCollectionView = [NSNumber numberWithInt:1+[self.numberOfSectionsInCollectionView intValue]];
-        //[self.collectionView insertSections:[NSIndexSet indexSetWithIndex:[self.numberOfSectionsInCollectionView intValue]-1]];
-        
-        
-
-        
-
     }
 }
 
@@ -118,24 +83,18 @@
         CHTCollectionViewWaterfallLayout *layout = [[CHTCollectionViewWaterfallLayout alloc] init];
         
         layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10);
-        layout.headerHeight = 15;
+       // layout.headerHeight = 10;
         layout.footerHeight = 10;
-        layout.minimumColumnSpacing = 20;
-        layout.minimumInteritemSpacing = 30;
+        layout.minimumColumnSpacing = 10;
+        layout.minimumInteritemSpacing = 10;
         
         _collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:layout];
         _collectionView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         _collectionView.dataSource = self;
         _collectionView.delegate = self;
-        _collectionView.backgroundColor = [UIColor whiteColor];
+        _collectionView.backgroundColor = [UIColor blackColor];
         [_collectionView registerClass:[CHTCollectionViewWaterfallCell class]
             forCellWithReuseIdentifier:CELL_IDENTIFIER];
-        [_collectionView registerClass:[CHTCollectionViewWaterfallHeader class]
-            forSupplementaryViewOfKind:CHTCollectionElementKindSectionHeader
-                   withReuseIdentifier:HEADER_IDENTIFIER];
-        [_collectionView registerClass:[CHTCollectionViewWaterfallFooter class]
-            forSupplementaryViewOfKind:CHTCollectionElementKindSectionFooter
-                   withReuseIdentifier:FOOTER_IDENTIFIER];
     }
     return _collectionView;
 }
@@ -151,7 +110,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.products = [[NSMutableArray alloc]init];
-    self.trackedLoadingCount = [NSNumber numberWithInteger: CELL_COUNT];
+    self.trackedLoadingCount = @(CELL_COUNT);
     self.trackedFromID = [NSNumber numberWithInteger: 1];
 
 
@@ -219,12 +178,7 @@
         }
     });
     
-    /*
-     UIImage* cellImage = [[UIImage alloc]init];
-     NSArray* passedArgumentsArray = [NSArray arrayWithObjects:indexPath,cellImage,nil];
-     [self performSelectorInBackground:@selector(downloadCellImage:) withObject:passedArgumentsArray];
-     cell.imageView.image = [passedArgumentsArray objectAtIndex:1];
-     */
+    
     
     cell.descriptionLabel.text = p.productDescription;
     cell.priceLabel.text = [NSString stringWithFormat:@"$%@",p.productPrice];
@@ -232,34 +186,15 @@
     [cell.descriptionLabel setCenter:cell.contentView.center];
     [cell.priceLabel setFrame:CGRectMake(p.cellSize.width - 50, 30, 50, 15)];
     
+    [cell.descriptionLabel sizeToFit];
     
-    [cell.descriptionLabel setFrame: CGRectMake(15, [p cellSize].height/2, [p cellSize].width, [p cellSize].height/2)];
+    [cell.descriptionLabel setFrame: CGRectMake(0, cell.contentView.bounds.size.height - cell.descriptionLabel.bounds.size.height, cell.contentView.bounds.size.width, cell.descriptionLabel.bounds.size.height)];
     
+    cell.imageView.layer.borderColor = [UIColor grayColor].CGColor;
+    cell.imageView.layer.borderWidth = 1.0;
     return cell;
 }
-/*
- -(void)downloadCellImage:(NSArray*)arg
- {
- NSIndexPath* indexPath = [arg objectAtIndex:0];
- UIImage* returnedImage = [arg objectAtIndex:1];
- returnedImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.cats[indexPath.item % 4]]]];
- }
- */
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-    UICollectionReusableView *reusableView = nil;
-    
-    if ([kind isEqualToString:CHTCollectionElementKindSectionHeader]) {
-        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:kind
-                                                          withReuseIdentifier:HEADER_IDENTIFIER
-                                                                 forIndexPath:indexPath];
-    } else if ([kind isEqualToString:CHTCollectionElementKindSectionFooter]) {
-        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:kind
-                                                          withReuseIdentifier:FOOTER_IDENTIFIER
-                                                                 forIndexPath:indexPath];
-    }
-    
-    return reusableView;
-}
+
 
 #pragma mark - CHTCollectionViewDelegateWaterfallLayout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {

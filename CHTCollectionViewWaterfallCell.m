@@ -38,11 +38,16 @@
       [self.contentView bringSubviewToFront: priceLabel];
       
       [descriptionLabel sizeToFit]; //added
+      descriptionLabel.frame = CGRectMake(0,
+                                          self.contentView.bounds.size.height-descriptionLabel.bounds.size.height, self.contentView.bounds.size.width, descriptionLabel.bounds.size.height);
       //[descriptionLabel layoutIfNeeded]; //added
       descriptionLabel.lineBreakMode = NSLineBreakByWordWrapping;
       descriptionLabel.numberOfLines = 0;
+      descriptionLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
       //[descriptionLabel setBounds: self.contentView.bounds];
       //[descriptionLabel setCenter:self.contentView.center];
+      
+      descriptionLabel.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
   }
   return self;
 }
@@ -51,9 +56,9 @@
     if(!_descriptionLabel){
     _descriptionLabel = [[UILabel alloc]init];
     [_descriptionLabel setTextAlignment:NSTextAlignmentCenter];
-    [_descriptionLabel setTextColor:[UIColor yellowColor]];
+    [_descriptionLabel setTextColor:[UIColor whiteColor]];
     [_descriptionLabel setFont:[UIFont boldSystemFontOfSize:15]];
-        [_descriptionLabel setText:@"Default"];
+    [_descriptionLabel setText:@"Default"];
     
     }
     return _descriptionLabel;

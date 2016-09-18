@@ -14,8 +14,6 @@
 		193AF4A51D8E9455004BB20D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 193AF4A41D8E9455004BB20D /* Assets.xcassets */; };
 		193AF4A81D8E9455004BB20D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 193AF4A61D8E9455004BB20D /* LaunchScreen.storyboard */; };
 		19D1F4331D8E999F006179A7 /* CHTCollectionViewWaterfallCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 19D1F42E1D8E999F006179A7 /* CHTCollectionViewWaterfallCell.m */; };
-		19D1F4341D8E999F006179A7 /* CHTCollectionViewWaterfallHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 19D1F4301D8E999F006179A7 /* CHTCollectionViewWaterfallHeader.m */; };
-		19D1F4351D8E999F006179A7 /* CHTCollectionViewWaterfallFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 19D1F4321D8E999F006179A7 /* CHTCollectionViewWaterfallFooter.m */; };
 		19D1F43A1D8EA2C6006179A7 /* ProductImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 19D1F4371D8EA2C6006179A7 /* ProductImage.m */; };
 		19D1F43B1D8EA2C6006179A7 /* Product.m in Sources */ = {isa = PBXBuildFile; fileRef = 19D1F4391D8EA2C6006179A7 /* Product.m */; };
 		C1CCC2A618B0230A4B04B48E /* libPods-Products.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DE55866C073849F79FC07B8 /* libPods-Products.a */; };
@@ -34,10 +32,6 @@
 		193AF4A91D8E9455004BB20D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		19D1F42D1D8E999F006179A7 /* CHTCollectionViewWaterfallCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHTCollectionViewWaterfallCell.h; sourceTree = "<group>"; };
 		19D1F42E1D8E999F006179A7 /* CHTCollectionViewWaterfallCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHTCollectionViewWaterfallCell.m; sourceTree = "<group>"; };
-		19D1F42F1D8E999F006179A7 /* CHTCollectionViewWaterfallHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHTCollectionViewWaterfallHeader.h; sourceTree = "<group>"; };
-		19D1F4301D8E999F006179A7 /* CHTCollectionViewWaterfallHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHTCollectionViewWaterfallHeader.m; sourceTree = "<group>"; };
-		19D1F4311D8E999F006179A7 /* CHTCollectionViewWaterfallFooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHTCollectionViewWaterfallFooter.h; sourceTree = "<group>"; };
-		19D1F4321D8E999F006179A7 /* CHTCollectionViewWaterfallFooter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHTCollectionViewWaterfallFooter.m; sourceTree = "<group>"; };
 		19D1F4361D8EA2C6006179A7 /* ProductImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductImage.h; sourceTree = "<group>"; };
 		19D1F4371D8EA2C6006179A7 /* ProductImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductImage.m; sourceTree = "<group>"; };
 		19D1F4381D8EA2C6006179A7 /* Product.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Product.h; sourceTree = "<group>"; };
@@ -64,10 +58,6 @@
 			children = (
 				19D1F42D1D8E999F006179A7 /* CHTCollectionViewWaterfallCell.h */,
 				19D1F42E1D8E999F006179A7 /* CHTCollectionViewWaterfallCell.m */,
-				19D1F42F1D8E999F006179A7 /* CHTCollectionViewWaterfallHeader.h */,
-				19D1F4301D8E999F006179A7 /* CHTCollectionViewWaterfallHeader.m */,
-				19D1F4311D8E999F006179A7 /* CHTCollectionViewWaterfallFooter.h */,
-				19D1F4321D8E999F006179A7 /* CHTCollectionViewWaterfallFooter.m */,
 				19D1F4361D8EA2C6006179A7 /* ProductImage.h */,
 				19D1F4371D8EA2C6006179A7 /* ProductImage.m */,
 				19D1F4381D8EA2C6006179A7 /* Product.h */,
@@ -249,9 +239,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				19D1F4341D8E999F006179A7 /* CHTCollectionViewWaterfallHeader.m in Sources */,
 				193AF4A01D8E9455004BB20D /* ViewController.m in Sources */,
-				19D1F4351D8E999F006179A7 /* CHTCollectionViewWaterfallFooter.m in Sources */,
 				193AF49D1D8E9455004BB20D /* AppDelegate.m in Sources */,
 				19D1F4331D8E999F006179A7 /* CHTCollectionViewWaterfallCell.m in Sources */,
 				19D1F43B1D8EA2C6006179A7 /* Product.m in Sources */,
