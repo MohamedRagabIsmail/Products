@@ -53,15 +53,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		193AF48C1D8E9455004BB20D = {
+		19394E661D8F10A4006A6463 /* CollectionViewWaterfallCellClass */ = {
 			isa = PBXGroup;
 			children = (
 				19D1F42D1D8E999F006179A7 /* CHTCollectionViewWaterfallCell.h */,
 				19D1F42E1D8E999F006179A7 /* CHTCollectionViewWaterfallCell.m */,
+			);
+			name = CollectionViewWaterfallCellClass;
+			sourceTree = "<group>";
+		};
+		19394E671D8F1128006A6463 /* Product */ = {
+			isa = PBXGroup;
+			children = (
 				19D1F4361D8EA2C6006179A7 /* ProductImage.h */,
 				19D1F4371D8EA2C6006179A7 /* ProductImage.m */,
 				19D1F4381D8EA2C6006179A7 /* Product.h */,
 				19D1F4391D8EA2C6006179A7 /* Product.m */,
+			);
+			name = Product;
+			sourceTree = "<group>";
+		};
+		193AF48C1D8E9455004BB20D = {
+			isa = PBXGroup;
+			children = (
+				19394E671D8F1128006A6463 /* Product */,
+				19394E661D8F10A4006A6463 /* CollectionViewWaterfallCellClass */,
 				193AF4971D8E9455004BB20D /* Products */,
 				193AF4961D8E9455004BB20D /* Products */,
 				63B82D6267EE4B66A1C5CCDE /* Pods */,
