@@ -22,6 +22,7 @@
 @property (nonatomic, strong) NSMutableArray *products;
 @property (nonatomic,strong) NSNumber* trackedLoadingCount;
 @property (nonatomic,strong) NSNumber* trackedFromID;
+@property (nonatomic,strong) NSCache* imagesCache;
 
 @end
 
@@ -110,6 +111,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.products = [[NSMutableArray alloc]init];
+    self.imagesCache = [[NSCache alloc]init];
     self.trackedLoadingCount = @(CELL_COUNT);
     self.trackedFromID = [NSNumber numberWithInteger: 1];
 
@@ -162,21 +164,33 @@
     
     cell.imageURL = p.productImage.ProductImageURL;
     
-    NSLog(@"%@",cell.imageURL);
+    if(![self.imagesCache objectForKey:p.productImage.ProductImageURL])
+    {
+        
+        NSLog(@"%@",cell.imageURL);
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW,0), ^{
+            
+            UIImage* networkImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:p.productImage.ProductImageURL]]];
+            
+            if(imageView) {
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    if(cell.imageURL == p.productImage.ProductImageURL)
+                    {
+                        imageView.image = networkImage;
+                        [self.imagesCache setObject:imageView.image forKey:p.productImage.ProductImageURL];
+
+                    }
+                });
+            }
+        });
+        
+    }
+    else
+    {
+        imageView.image = [self.imagesCache objectForKey:p.productImage.ProductImageURL];
+    }
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW,0), ^{
-        
-        UIImage* networkImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:p.productImage.ProductImageURL]]];
-        
-        if(imageView) {
-            dispatch_sync(dispatch_get_main_queue(), ^{
-                if(cell.imageURL == p.productImage.ProductImageURL)
-                {
-                    imageView.image = networkImage;
-                }
-            });
-        }
-    });
     
     
     
